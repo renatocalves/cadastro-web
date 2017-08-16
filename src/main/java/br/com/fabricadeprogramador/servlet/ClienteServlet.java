@@ -55,6 +55,9 @@ public class ClienteServlet extends HttpServlet {
 		response.setCharacterEncoding("UTF-8");
 		PrintWriter out = response.getWriter();
 		out.print("Chamou pelo método POST.");
+		
+		String paramNome = request.getParameter("nome");
+		System.out.println(paramNome);
 	}
 
 }
