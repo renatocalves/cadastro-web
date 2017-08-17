@@ -1,13 +1,17 @@
 package br.com.fabricadeprogramador.servlet;
 
 import java.io.IOException;
-import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.List;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import br.com.fabricadeprogramador.model.Cliente;
 
 @WebServlet("/cliente")
 public class ClienteServlet extends HttpServlet {
@@ -17,47 +21,27 @@ public class ClienteServlet extends HttpServlet {
 	 */
 	private static final long serialVersionUID = 1L;
 	
-	public ClienteServlet() {
-		System.out.println("Contruindo o servlet...");
-	}
-	
-	@Override
-	public void init() throws ServletException {
-		System.out.println("Inicializando o servlet...");
-		super.init();
-	}
-	
-	@Override
-	protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		System.out.println("Chamou o método service...");
-		super.service(request, response);
-	}
-	
-	@Override
-	public void destroy() {
-		System.out.println("Destruindo o servlet...");
-		super.destroy();
-	}
+	private static List<Cliente> listaDeClientes = new ArrayList<>();
 	
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		System.out.println("Chamou pelo método GET.");
+		RequestDispatcher dispatcher = request.getRequestDispatcher("cliente.jsp");
+
+		request.setAttribute("lista", listaDeClientes);
 		
-		response.setCharacterEncoding("UTF-8");
-		PrintWriter out = response.getWriter();
-		out.println("Chamou pelo método GET.");
+		dispatcher.forward(request, response);
 	}
 	
 	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		System.out.println("Chamou pelo método POST.");
-		
-		response.setCharacterEncoding("UTF-8");
-		PrintWriter out = response.getWriter();
-		out.print("Chamou pelo método POST.");
-		
+					
 		String paramNome = request.getParameter("nome");
-		System.out.println(paramNome);
+		
+		Cliente cliente = new Cliente();
+		cliente.setNome(paramNome);
+		
+		listaDeClientes.add(cliente);
 	}
 
 }
